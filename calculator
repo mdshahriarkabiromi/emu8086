@@ -1,0 +1,90 @@
+.model small
+.stack 100h
+.data
+    msg1 db 'Enter first number: $'
+    msg2 db 'Enter second number: $'
+    msg_add db 'Addition result: $'
+    msg_sub db 'Subtraction result: $'
+    msg_mul db 'Multiplication result: $'
+    msg_div db 'Division result: $'
+    num1 db ?
+    num2 db ?
+    result db ?
+.code
+main proc
+    mov ax, @data
+    mov ds, ax
+
+    ; Input first number
+    lea dx, msg1
+    mov ah, 09h
+    int 21h
+    mov ah, 01h
+    int 21h
+    sub al, 30h
+    mov num1, al
+
+    ; Input second number
+    lea dx, msg2
+    mov ah, 09h
+    int 21h
+    mov ah, 01h  
+    int 21h      
+    sub al, 30h     
+    mov num2, al      
+
+    ; Addition
+    mov al, num1
+    add al, num2
+    mov result, al
+    lea dx, msg_add
+    mov ah, 09h
+    int 21h
+    mov dl, result
+    add dl, 30h
+    mov ah, 02h
+    int 21h
+
+    ; Subtraction
+    mov al, num1
+    sub al, num2
+    mov result, al
+    lea dx, msg_sub
+    mov ah, 09h
+    int 21h
+    mov dl, result
+    add dl, 30h
+    mov ah, 02h
+    int 21h
+
+    ; Multiplication
+    mov al, num1
+    mov bl, num2
+    mul bl
+    mov result, al
+    lea dx, msg_mul
+    mov ah, 09h
+    int 21h
+    mov dl, result
+    add dl, 30h
+    mov ah, 02h
+    int 21h
+
+    ; Division
+    mov al, num1
+    mov bl, num2
+    xor ah, ah  ; Clear AH to ensure AX contains only the dividend
+    div bl
+    mov result, al
+    lea dx, msg_div
+    mov ah, 09h
+    int 21h
+    mov dl, result
+    add dl, 30h
+    mov ah, 02h
+    int 21h
+
+    mov ah, 4Ch
+    int 21h
+main endp
+end main
